@@ -5,6 +5,11 @@ import { j } from "./__internals/j"
  *
  * You can remove this if you don't like it, but caching can massively speed up your database queries.
  */
+const authMiddleware = j.middleware(({ next }) => {
+    const user = { name: "john" }
+    return next({ user })
+});
+
 
 /**
  * Public (unauthenticated) procedures
@@ -13,3 +18,5 @@ import { j } from "./__internals/j"
  */
 export const baseProcedure = j.procedure
 export const publicProcedure = baseProcedure
+
+export const privateProcedure = publicProcedure.use(authMiddleware);
