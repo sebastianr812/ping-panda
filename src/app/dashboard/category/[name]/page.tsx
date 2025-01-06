@@ -2,6 +2,7 @@ import { DashboardPage } from "@/components/dashboard-page";
 import { db } from "@/db";
 import { currentUser } from "@clerk/nextjs/server";
 import { notFound } from "next/navigation";
+import { CategoryPageContent } from "./category-page-content";
 
 interface PageProps {
     params: {
@@ -56,7 +57,7 @@ export default async function Page({ params }: PageProps) {
         <DashboardPage
             title={`${category.emoji} ${category.name} events`}
         >
-            <CategoryPageContent />
+            <CategoryPageContent hasEvents={hasEvents} category={category} />
         </DashboardPage>
     );
 }
