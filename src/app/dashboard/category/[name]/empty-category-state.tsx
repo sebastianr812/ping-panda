@@ -32,14 +32,14 @@ export const EmptyCategoryState = ({ categoryName }: { categoryName: string }) =
       method: 'POST',
         headers: {
             'Authorization': 'Bearer YOUR_API_KEY'
-              },
-                body: JSON.stringify({
-                    category: '${categoryName}',
-                        fields: {
-                              field1: 'value1', // for example: user id
-                                    field2: 'value2' // for example: user email
-                                        }
-      })
+        },
+        body: JSON.stringify({
+            category: '${categoryName}',
+                fields: {
+                    field1: 'value1', // for example: user id,
+                    field2: 'value2' // for example: user email
+                }
+        })
     })`
 
     return (
