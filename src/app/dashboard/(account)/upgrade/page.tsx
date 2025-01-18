@@ -2,6 +2,7 @@ import { DashboardPage } from "@/components/dashboard-page";
 import { db } from "@/db";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import { UpgradePageContent } from "./upgrade-page-content";
 
 export default async function Page() {
     const auth = await currentUser();
@@ -20,7 +21,7 @@ export default async function Page() {
 
     return (
         <DashboardPage title="Pro Membership">
-            <UpgradePageContent />
+            <UpgradePageContent plan={user.plan} />
         </DashboardPage>
     );
 }
