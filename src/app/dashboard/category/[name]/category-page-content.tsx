@@ -49,11 +49,6 @@ export const CategoryPageContent = ({
         initialData: { hasEvents: initalHasEvents }
     });
 
-    if (!pollingData.hasEvents) {
-        return (
-            <EmptyCategoryState categoryName={category.name} />
-        );
-    }
 
     const { data, isFetching } = useQuery({
         queryKey: [
@@ -236,6 +231,12 @@ export const CategoryPageContent = ({
 
             );
         })
+    }
+
+    if (!pollingData.hasEvents) {
+        return (
+            <EmptyCategoryState categoryName={category.name} />
+        );
     }
 
     return (

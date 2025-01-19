@@ -6,8 +6,15 @@ import { DashboardPageContent } from "./dashboard-page-content";
 import { CreateEventCategoryModal } from "@/components/create-event-category-modal";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
+import { createCheckoutSession } from "@/lib/stripe";
+import { PaymentSuccessModal } from "@/components/payment-success-modal";
 
-export default async function Page() {
+interface PageProps {
+    searchParams: {
+        [key: string]: string | string[] | undefined;
+    }
+}
+export default async function Page({ searchParams }: PageProps) {
     const auth = await currentUser();
 
     if (!auth) {
@@ -24,19 +31,37 @@ export default async function Page() {
         redirect("/sign-in");
     }
 
+    const intent = searchParams.intent;
+
+    if (intent === "upgrade") {
+        const session = await createCheckoutSession({
+            userId: user.id,
+            userEmail: user.email
+        });
+
+        if (session.url) {
+            redirect(session.url);
+        }
+    }
+
+    const success = searchParams.success;
+
     return (
-        <DashboardPage
-            cta={
-                <CreateEventCategoryModal>
-                    <Button className="w-full sm:w-fit">
-                        <PlusIcon className="size-4 mr-2" />
-                        Add Category
-                    </Button>
-                </CreateEventCategoryModal>
-            }
-            title="Dashboard">
-            <DashboardPageContent />
-        </DashboardPage>
+        <>
+            {success ? <PaymentSuccessModal /> : null}
+            <DashboardPage
+                cta={
+                    <CreateEventCategoryModal>
+                        <Button className="w-full sm:w-fit">
+                            <PlusIcon className="size-4 mr-2" />
+                            Add Category
+                        </Button>
+                    </CreateEventCategoryModal>
+                }
+                title="Dashboard">
+                <DashboardPageContent />
+            </DashboardPage>
+        </>
     );
 }
 
